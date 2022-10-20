@@ -15,4 +15,4 @@ airflow scheduler -D
 ```
 load_examples = False
 
-Airflow installation docs :https://betterdatascience.com/apache-airflow-install/
+Reference :https://betterdatascience.com/apache-airflow-install/
