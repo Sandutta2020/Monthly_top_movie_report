@@ -15,4 +15,8 @@ airflow scheduler -D
 ```
 load_examples = False
 
+List of process running at 8080
+```
+lsof -i tcp:8080
+```
 Reference :https://betterdatascience.com/apache-airflow-install/
