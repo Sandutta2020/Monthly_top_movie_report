@@ -14,7 +14,7 @@ class class_movie_review_raw:
                           Movie_review_raw(User_ID  INTEGER, \n
                           MovieID INTEGER, \n
                           Rating INTEGER, \n
-                          Review_DATE Review_date)"""
+                          Review_DATE Text)"""
         self.cur.execute(self.sql)
 
     def insert_review_data(self, df):
