@@ -7,3 +7,6 @@ analysis/.ipynb_checkpoints/Report_Analysis-checkpoint.ipynb
 analysis/.ipynb_checkpoints/Exploratory_Analysis-checkpoint.ipynb
 analysis/.ipynb_checkpoints/Pandas_timestamp-checkpoint.ipynb
 src/Movie_report.db
+DRA/*.csv
+analysis/.ipynb_checkpoints/Untitled-checkpoint.ipynb
+DRA/Archive/*.csv
