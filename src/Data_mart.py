@@ -25,22 +25,26 @@ class class_data_mart:
                        )
                     select 
                     MovieID ,
-                    Months,
-                    avg(avg) over(partition by MovieID,Months) Monthly_rating_avg,
-                    sum(count) over(partition by MovieID,Months ) Monthly_rating_cnt,
-                    avg(avg) over(partition by MovieID order by Months ) Overall_rating_avg,
-                    sum(count) over(partition by MovieID ) Overall_rating_cnt
+                    Review_month,
+                    avg(avg) over(partition by MovieID,Review_month) Monthly_rating_avg,
+                    sum(count) over(partition by MovieID,Review_month ) Monthly_rating_cnt,
+                    avg(avg) over(partition by MovieID order by Review_month ) Overall_rating_avg,
+                    sum(count) over(partition by MovieID order by Review_month) Overall_rating_cnt
                     from 
                     (select 
 	                count(*) count,
 	                Avg(Rating) avg,
 	                MovieID,
-	                Months	from 
+	                Review_month	from 
 	                Movie_review_Fact_details
-	                group by MovieID,Months)"""
+	                group by MovieID,Review_month)"""
         self.cur.execute(self.insert_sql)
         self.conn.commit()
-if __name__ == "__main__":
-    print("Calling creating_monthly_feed function")
+
+def creating_data_mart():
+    print("Loading Data Mart Function")
     cls1 =class_data_mart()
     cls1.loading_fact()
+
+if __name__ == "__main__":
+    creating_data_mart()

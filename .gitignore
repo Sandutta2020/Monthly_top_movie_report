@@ -10,3 +10,7 @@ src/Movie_report.db
 DRA/*.csv
 analysis/.ipynb_checkpoints/Untitled-checkpoint.ipynb
 DRA/Archive/*.csv
+src/__pycache__/preparing_monthly_feed.cpython-37.pyc
+src/__pycache__/Data_mart.cpython-37.pyc
+src/__pycache__/Data_receiving.cpython-37.pyc
+src/__pycache__/Data_Staging.cpython-37.pyc

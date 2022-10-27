@@ -44,6 +44,27 @@ class class_movie_Dim_loading:
     def __del__(self):
         print("Closing  connection for sqlite db")
         self.conn.close()
+
+class class_movie_facts_loading:
+    def __init__(self):
+        print("Creating Connection with sqlite db")
+        self.conn = sqlite3.connect("Movie_report.db")
+        self.cur = self.conn.cursor()
+        self.sql = """Create table if not exists  \n
+                          Movie_review_Fact_details(MovieID  INTEGER, \n
+                          Rating real, \n
+                          Review_month INTEGER)"""
+        self.cur.execute(self.sql)
+        self.sql = """Create table if not exists  \n
+                          Movie_review_raw(User_ID  INTEGER, \n
+                          MovieID INTEGER, \n
+                          Rating INTEGER, \n
+                          Review_date Text)"""
+        self.cur.execute(self.sql)
+
+    def __del__(self):
+        print("Closing  connection for sqlite db")
+        self.conn.close()
 if __name__ == "__main__":
     print("Loading Dimension")
     class_loading  =class_Date_Dim_loading()
@@ -51,3 +72,4 @@ if __name__ == "__main__":
     df_mov =pd.read_csv("..//data//Movie_details.gzip",compression='gzip')
     movie_loading =class_movie_Dim_loading()
     movie_loading.Load_movie_dimension(df_mov)
+    fact_loading =class_movie_facts_loading()
