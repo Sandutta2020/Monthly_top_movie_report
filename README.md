@@ -13,6 +13,13 @@ airflow users create --username admin --password admin --firstname Santanu --las
 airflow webserver -D
 airflow scheduler -D
 ```
+
+1) Load Tables initially
+python first_time_load.py
+
+2) Create a folder DRA under main folder
+	Create a folder Archive Under DRA
+
 load_examples = False
 
 List of process running at 8080
