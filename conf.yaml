@@ -1,0 +1,2 @@
+select_sql :
+  select_movie_review : "select  * from Movie_review_raw"
