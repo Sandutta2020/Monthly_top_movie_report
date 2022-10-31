@@ -1,21 +1,11 @@
 import sqlite3
 import pandas as pd
-class class_data_mart:
+from db_connector import SqliteDB_Connect
+class class_data_mart(SqliteDB_Connect):
     def __init__(self):
-        print("Creating Connection with sqlite db")
-        self.conn = sqlite3.connect("Movie_report.db")
-        self.cur = self.conn.cursor()
-        self.sql = """Create table if not exists  \n
-                          Movie_review_fact(MovieID  INTEGER, \n
-                          Review_month INTEGER,\n
-                          Monthly_rating_avg REAL,\n
-                          Monthly_rating_cnt INTEGER,\n
-                          Overall_rating_avg REAL,\n
-                          Overall_rating_cnt INTEGER)"""
-        self.cur.execute(self.sql)
+        super().__init__()
     def loading_fact(self):
-        self.trncate_sql ="delete from Movie_review_fact"
-        self.cur.execute(self.trncate_sql)
+        super().insert_sql('truncate_sql')
         self.insert_sql= """insert into Movie_review_fact(MovieID,
                      Review_month,
                      Monthly_rating_avg,
@@ -38,8 +28,7 @@ class class_data_mart:
 	                Review_month	from 
 	                Movie_review_Fact_details
 	                group by MovieID,Review_month)"""
-        self.cur.execute(self.insert_sql)
-        self.conn.commit()
+        super().insert_sql('movie_fact',self.insert_sql)
 
 def creating_data_mart():
     print("Loading Data Mart Function")

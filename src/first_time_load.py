@@ -61,6 +61,14 @@ class class_movie_facts_loading:
                           Rating INTEGER, \n
                           Review_date Text)"""
         self.cur.execute(self.sql)
+        self.sql = """Create table if not exists  \n
+                          Movie_review_fact(MovieID  INTEGER, \n
+                          Review_month INTEGER,\n
+                          Monthly_rating_avg REAL,\n
+                          Monthly_rating_cnt INTEGER,\n
+                          Overall_rating_avg REAL,\n
+                          Overall_rating_cnt INTEGER)"""
+        self.cur.execute(self.sql)
 
     def __del__(self):
         print("Closing  connection for sqlite db")

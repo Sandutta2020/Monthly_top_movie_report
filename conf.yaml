@@ -1,2 +1,5 @@
 select_sql :
   select_movie_review : "select  * from Movie_review_raw"
+  insert_movie_raw : "Insert into Movie_review_raw select * from Movie_review_raw_temp"
+  insert_movie_details_fact : "Insert into Movie_review_Fact_details select * from Movie_review_Fact_details_temp"
+  truncate_sql : "delete from Movie_review_fact"

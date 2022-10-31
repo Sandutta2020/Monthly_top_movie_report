@@ -3,29 +3,15 @@ import os
 import sqlite3
 import fnmatch
 import shutil
+from db_connector import SqliteDB_Connect
 
 
-class class_movie_review_raw:
+class class_movie_review_raw(SqliteDB_Connect):
     def __init__(self):
-        print("Creating Connection with sqlite db")
-        self.conn = sqlite3.connect("Movie_report.db")
-        self.cur = self.conn.cursor()
-        self.sql = """Create table if not exists  \n
-                          Movie_review_raw_temp(User_ID  INTEGER, \n
-                          MovieID INTEGER, \n
-                          Rating INTEGER, \n
-                          Review_date Text)"""
-        self.cur.execute(self.sql)
+        super().__init__()
     def insert_review_data(self, df):
-        print("Get the last rundate")
         df.to_sql("Movie_review_raw_temp", self.conn, if_exists="replace", index=False)
-        self.sql= "Insert into Movie_review_raw select * from Movie_review_raw_temp"
-        self.cur.execute(self.sql)
-        self.conn.commit()
-    def __del__(self):
-        print("Closing  connection for sqlite db")
-        self.conn.close()
-
+        super().insert_sql('insert_movie_raw')
 
 pattern = "User_review*.csv"
 def Data_receiving():
