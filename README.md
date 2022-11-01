@@ -13,6 +13,13 @@ airflow users create --username admin --password admin --firstname Santanu --las
 airflow webserver -D
 airflow scheduler -D
 ```
+to create a yaml from sql query:
+```
+import yaml
+sql = ("""""")
+app_config = dict(sql=sql)
+print(yaml.dump(app_config))
+```
 
 1) Load Tables initially
 python first_time_load.py

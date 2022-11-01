@@ -19,17 +19,18 @@ class SqliteDB_Connect:
         self.conn = sqlite3.connect(DB_PATH)
         self.cur =self.conn.cursor()
         self.data_config = read_yaml("..//Conf.yaml", 'select_sql')
-    def insert_sql(self,insert_movie_raw,direct_sql=None):
-        if direct_sql:
-            self.insert_sql =direct_sql
-        else:
-            self.insert_sql= self.data_config[insert_movie_raw]
+    def insert_sql(self,insert_movie_raw):
+        self.insert_sql= self.data_config[insert_movie_raw]
         self.cur.execute(self.insert_sql)
         self.conn.commit()
     def select_sql(self,Sql_input):        
         self.selectsql= self.data_config[Sql_input]
         df = pd.read_sql_query(self.selectsql, self.conn, parse_dates=["Review_date"])
         return df
+    def create_sql(self,Sql_input):
+        self.insert_sql= self.data_config[Sql_input]
+        self.cur.execute(self.insert_sql)
+
     def __del__(self):
         print("Closing  connection for sqlite db")
         self.conn.close()

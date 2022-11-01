@@ -1,13 +1,11 @@
 import sqlite3
 import pandas as pd
 from dateutil.relativedelta import relativedelta
+from db_connector import SqliteDB_Connect
 
-
-class class_Job_loading:
+class class_Job_loading(SqliteDB_Connect):
     def __init__(self):
-        print("Creating Connection with sqlite db")
-        self.conn = sqlite3.connect("Movie_report.db")
-        self.cur = self.conn.cursor()
+        super().__init__()
         self.sql = "Create table if not exists JOB_RUN_DATE(RUNDATE  DATE)"
         self.cur.execute(self.sql)
         self.selectsql = "select  RUNDATE from JOB_RUN_DATE"
@@ -35,11 +33,6 @@ class class_Job_loading:
         self.cur.execute(self.updatesql)
         self.conn.commit()
         # print(df)
-
-    def __del__(self):
-        print("Closing  connection for sqlite db")
-        self.conn.close()
-
 
 def creating_monthly_feed():
     job_class = class_Job_loading()

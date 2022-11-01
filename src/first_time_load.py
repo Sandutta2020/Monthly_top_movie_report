@@ -1,16 +1,21 @@
 import pandas as pd
 import sqlite3
-class class_Date_Dim_loading:
+from db_connector import SqliteDB_Connect
+class class_Dimention_loading(SqliteDB_Connect):
     def __init__(self):
+        super().__init__()
         print("Creating Connection with sqlite db")
-        self.conn = sqlite3.connect("Movie_report.db")
-        self.cur = self.conn.cursor()
         self.sql = """Create table if not exists  \n
                           DateDim(Date  INTEGER, \n
                           Month INTEGER, \n
                           Quarter INTEGER, \n                          
                           Year INTEGER, \n
                           Mon INTEGER)"""
+        self.cur.execute(self.sql)
+        self.sql = """Create table if not exists  \n
+                          MovieDIM(movieID  INTEGER, \n
+                          Genre TEXT, \n
+                          Title TEXT)"""
         self.cur.execute(self.sql)
     def return_yyyymm_format(self,date):
         mon = str(date.month)
@@ -24,32 +29,12 @@ class class_Date_Dim_loading:
         df["Year"] = df.Date.dt.year
         df['Mon'] = df.Date.dt.month
         df.to_sql("DateDim", self.conn, if_exists="replace", index=False)
-
-    def __del__(self):
-        print("Closing  connection for sqlite db")
-        self.conn.close()
-class class_movie_Dim_loading:
+    def Load_movie_dimension_from_dataframe(self, df,table_name):
+        df.to_sql(table_name, self.conn, if_exists="replace", index=False)
+class class_movie_facts_loading(SqliteDB_Connect):
     def __init__(self):
+        super().__init__()
         print("Creating Connection with sqlite db")
-        self.conn = sqlite3.connect("Movie_report.db")
-        self.cur = self.conn.cursor()
-        self.sql = """Create table if not exists  \n
-                          MovieDIM(movieID  INTEGER, \n
-                          Genre TEXT, \n
-                          Title TEXT)"""
-        self.cur.execute(self.sql)
-    def Load_movie_dimension(self, df):
-        df.to_sql("MovieDIM", self.conn, if_exists="replace", index=False)
-
-    def __del__(self):
-        print("Closing  connection for sqlite db")
-        self.conn.close()
-
-class class_movie_facts_loading:
-    def __init__(self):
-        print("Creating Connection with sqlite db")
-        self.conn = sqlite3.connect("Movie_report.db")
-        self.cur = self.conn.cursor()
         self.sql = """Create table if not exists  \n
                           Movie_review_Fact_details(MovieID  INTEGER, \n
                           Rating real, \n
@@ -69,15 +54,10 @@ class class_movie_facts_loading:
                           Overall_rating_avg REAL,\n
                           Overall_rating_cnt INTEGER)"""
         self.cur.execute(self.sql)
-
-    def __del__(self):
-        print("Closing  connection for sqlite db")
-        self.conn.close()
 if __name__ == "__main__":
     print("Loading Dimension")
-    class_loading  =class_Date_Dim_loading()
+    class_loading  =class_Dimention_loading()
     class_loading.Load_date_dimension('4/1/2000','3/1/2003')
     df_mov =pd.read_csv("..//data//Movie_details.gzip",compression='gzip')
-    movie_loading =class_movie_Dim_loading()
-    movie_loading.Load_movie_dimension(df_mov)
+    class_loading.Load_movie_dimension_from_dataframe(df_mov,"MovieDIM")
     fact_loading =class_movie_facts_loading()

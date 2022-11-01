@@ -1,6 +1,5 @@
 import pandas as pd
 import os
-import sqlite3
 import fnmatch
 import shutil
 from db_connector import SqliteDB_Connect
