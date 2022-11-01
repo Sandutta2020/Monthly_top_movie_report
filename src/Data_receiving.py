@@ -15,13 +15,18 @@ class class_movie_review_raw(SqliteDB_Connect):
 pattern = "User_review*.csv"
 def Data_receiving():
     movie_db = class_movie_review_raw()
+    csv_file_flag = False
     for file in os.listdir("..//DRA//"):
         if fnmatch.fnmatch(file, pattern):
             print(file)
+            csv_file_flag = True
             df = pd.read_csv("..//DRA//" + file)
             print(df.shape)
             movie_db.insert_review_data(df)
             shutil.move("..//DRA//" + file, "..//DRA//Archive//" + file)
+    if not csv_file_flag:
+        print("No CSV files Present")
+        raise Exception("No CSV files Present in DRA folder")
 
 
 if __name__ == "__main__":

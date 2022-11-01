@@ -26,10 +26,10 @@ with DAG(
 """
 if __name__ == "__main__":
     creating_monthly_feed()
-    print("Monthly Feed Complete")
+    print("Monthly Feed Complete----------")
     Data_receiving()
-    print("Data Receiving Complete")
+    print("Data Receiving Complete--------")
     data_staging()
-    print("Loading Staging Complete")
+    print("Loading Staging Complete-------")
     creating_data_mart()
-    print("Loading Data Mart  Complete")
+    print("Loading Data Mart  Complete----")
