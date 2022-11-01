@@ -16,4 +16,5 @@ select_sql :
   \t                Avg(Rating) avg,\n\t                MovieID,\n\t             \
   \   Review_month\tfrom \n\t                Movie_review_Fact_details\n\t       \
   \         group by MovieID,Review_month)"
-create_run_date : "Create table if not exists JOB_RUN_DATE(RUNDATE  DATE)"
+  create_run_date : "Create table if not exists JOB_RUN_DATE(RUNDATE  DATE)"
+numtopmovies : 15

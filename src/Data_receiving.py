@@ -22,13 +22,17 @@ def Data_receiving():
             csv_file_flag = True
             df = pd.read_csv("..//DRA//" + file)
             print(df.shape)
-            movie_db.insert_review_data(df)
-            shutil.move("..//DRA//" + file, "..//DRA//Archive//" + file)
+            if check_quality(df):
+                movie_db.insert_review_data(df)
+                shutil.move("..//DRA//" + file, "..//DRA//Archive//" + file)
     if not csv_file_flag:
         print("No CSV files Present")
         raise Exception("No CSV files Present in DRA folder")
-
-
+def check_quality(df):
+    if len(df) ==0:
+        print("The CSV is empty or Unreadable")
+        return False
+    return True
 if __name__ == "__main__":
     print("Calling Data Receiving function")
     Data_receiving()
