@@ -25,12 +25,18 @@ class SqliteDB_Connect:
         self.conn.commit()
     def select_sql(self,Sql_input):        
         self.selectsql= self.data_config[Sql_input]
-        df = pd.read_sql_query(self.selectsql, self.conn, parse_dates=["Review_date"])
+        df = pd.read_sql_query(self.selectsql, self.conn, parse_dates=["Review_date","RUNDATE"])
         return df
     def create_sql(self,Sql_input):
         self.insert_sql= self.data_config[Sql_input]
         self.cur.execute(self.insert_sql)
-
+    def set_rundate(self, updated_run_date):
+        print("setting updated rundate with :", updated_run_date)
+        self.updatesql = (
+            """update JOB_RUN_DATE set RUNDATE =""" + "'" + updated_run_date + "'"
+        )
+        self.cur.execute(self.updatesql)
+        self.conn.commit()    
     def __del__(self):
         print("Closing  connection for sqlite db")
         self.conn.close()

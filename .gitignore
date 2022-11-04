@@ -11,3 +11,5 @@ analysis/.ipynb_checkpoints/Untitled-checkpoint.ipynb
 DRA/Archive/*.csv
 src/__pycache__/*.pyc
 sqlite_DB/Movie_report.db
+src/sql_file.py
+report/*.csv

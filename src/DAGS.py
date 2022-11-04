@@ -3,6 +3,7 @@ from preparing_monthly_feed import creating_monthly_feed
 from Data_receiving import Data_receiving
 from Data_Staging import  data_staging
 from Data_mart import  creating_data_mart
+from report_generation import report_generation_monthwise
 import os
 from datetime import datetime, timedelta
 """
@@ -33,3 +34,5 @@ if __name__ == "__main__":
     print("Loading Staging Complete-------")
     creating_data_mart()
     print("Loading Data Mart  Complete----")
+    report_generation_monthwise()
+    print("Report Generation Complete")

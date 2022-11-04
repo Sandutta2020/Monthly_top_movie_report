@@ -16,5 +16,18 @@ select_sql :
   \t                Avg(Rating) avg,\n\t                MovieID,\n\t             \
   \   Review_month\tfrom \n\t                Movie_review_Fact_details\n\t       \
   \         group by MovieID,Review_month)"
+  report_sql: "select Title as \"Movie Name\",\n                             Mon as\
+  \ \"Review Month\",\n                             Overall_rating_avg as \"Rating_Average\"\
+  ,\n                             Overall_rating_cnt as Overall_rating_cnt\n     \
+  \                        from \n                             (select mdim.Title,\n\
+  \                                ddim.Mon,fct.Overall_rating_avg,\n            \
+  \                    fct.Overall_rating_cnt ,\n                                avg(fct.Overall_rating_cnt)\
+  \ over(partition by Review_month)*4 cntavg \n                            from Movie_review_fact\
+  \ fct ,\n                            MovieDIM mdim ,\n                         \
+  \   DateDim ddim \n                            where  mdim.movieID=fct.MovieID\n\
+  \                            and ddim.Month=fct.Review_month\n                 \
+  \           order by  fct.Overall_rating_avg desc)  a where a.Overall_rating_cnt\
+  \ > a.cntavg\n                            limit 15\n"
+  select_job_date : "select  RUNDATE from JOB_RUN_DATE" 
   create_run_date : "Create table if not exists JOB_RUN_DATE(RUNDATE  DATE)"
-numtopmovies : 15
+numtopmovies : 10

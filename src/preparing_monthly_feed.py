@@ -49,7 +49,7 @@ def creating_monthly_feed():
     file_name = start_date.strftime("%Y%m")
     delta_records.to_csv("..//DRA//User_review" + file_name + ".csv", index=False)
     end_date = str(end_date)[0:10]
-    job_class.set_rundate(end_date)
+    #job_class.set_rundate(end_date)
 
 
 if __name__ == "__main__":
