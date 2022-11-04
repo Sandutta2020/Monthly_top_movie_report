@@ -24,8 +24,10 @@ print(yaml.dump(app_config))
 1) Load Tables initially
 python first_time_load.py
 
-2) Create a folder DRA under main folder
-	Create a folder Archive Under DRA
+2) Create the following folder
+	1)DRA under main folder and ceate a folder Archive Under DRA
+	2) sqlite_DB
+	3) report
 
 load_examples = False
 
