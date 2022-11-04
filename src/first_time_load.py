@@ -1,6 +1,7 @@
 import pandas as pd
 import sqlite3
 from db_connector import SqliteDB_Connect
+import datetime
 class class_Dimention_loading(SqliteDB_Connect):
     def __init__(self):
         super().__init__()
@@ -28,6 +29,7 @@ class class_Dimention_loading(SqliteDB_Connect):
         df["Quarter"] = df.Date.dt.quarter
         df["Year"] = df.Date.dt.year
         df['Mon'] = df.Date.dt.month
+        df["Review_mon"] = df.Date.apply(lambda x : datetime.datetime.strftime(x,"%b-%y"))
         df.to_sql("DateDim", self.conn, if_exists="replace", index=False)
     def Load_movie_dimension_from_dataframe(self, df,table_name):
         df.to_sql(table_name, self.conn, if_exists="replace", index=False)
