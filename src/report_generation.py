@@ -20,7 +20,7 @@ def report_generation_monthwise():
     start_date =report_class.return_job_run_date()
     end_date = start_date + relativedelta(months=1)
     file_name =start_date.strftime("%Y%m")
-    df.to_csv("..//report//monthly_report"+file_name+".csv",index=False)
+    df.to_csv("..//report//monthly_report_"+file_name+".csv",index=False)
     print("Creating report Completed")
     end_date = str(end_date)[0:10]
     report_class.set_rundate(end_date)
