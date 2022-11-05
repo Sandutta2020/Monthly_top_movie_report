@@ -19,17 +19,16 @@ select_sql :
   report_sql: "select Title as \"Movie Name\",\n                             upper(Review_mon)\
   \ as \"Review Month\",\n                             Overall_rating_avg as \"Rating_Average\"\
   ,\n                             Overall_rating_cnt as Overall_rating_cnt\n     \
-  \                        from \n                             (select mdim.Title,\n\
+  \                        from\n                             (select mdim.Title,\n\
   \                                ddim.Review_mon,fct.Overall_rating_avg,\n     \
   \                           fct.Overall_rating_cnt ,\n                         \
-  \       max(fct.Overall_rating_cnt) over(partition by Review_month)/2 cntavg \n\
-  \                            from Movie_review_fact fct ,\n                    \
-  \        MovieDIM mdim ,\n                            DateDim ddim ,\n         \
-  \                   JOB_RUN_DATE jd\n                            where  mdim.movieID=fct.MovieID\n\
-  \                            and ddim.Month=fct.Review_month\n                 \
-  \           and ddim.Date > DATE(jd.RUNDATE, '-1 month')\n                     \
-  \       order by  fct.Overall_rating_avg desc)  a where a.Overall_rating_cnt > a.cntavg\n\
-  \                            limit 15\n"
+  \       max(fct.Overall_rating_cnt) over(partition by Review_month)/2 cntavg\n \
+  \                           from Movie_review_fact fct ,\n                     \
+  \       MovieDIM mdim ,\n                            DateDim ddim \n           \
+  \                 where  mdim.movieID=fct.MovieID\n                            and\
+  \ ddim.Month=fct.Review_month\n                            and ddim.Month = :jobmonth\n\
+  \                            order by  fct.Overall_rating_avg desc)  a where a.Overall_rating_cnt\
+  \ > a.cntavg\n                            limit 15\n"
   select_job_date : "select  RUNDATE from JOB_RUN_DATE" 
   create_run_date : "Create table if not exists JOB_RUN_DATE(RUNDATE  DATE)"
 numtopmovies : 10

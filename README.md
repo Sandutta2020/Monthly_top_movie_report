@@ -25,9 +25,9 @@ print(yaml.dump(app_config))
 python first_time_load.py
 
 2) Create the following folder
-	1)DRA under main folder and ceate a folder Archive Under DRA
-	2) sqlite_DB
-	3) report
+	1)DRA under main folder and ceate a folder Archive Under DRA <br>
+	2) sqlite_DB <br>
+	3) report <br>
 
 load_examples = False
 

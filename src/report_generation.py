@@ -5,8 +5,8 @@ import pandas as pd
 class report_generation(SqliteDB_Connect):
     def __init__(self):
         super().__init__()
-    def report_generation_function(self):
-        df =super().select_sql("report_sql")
+    def report_generation_function(self,Job_month):
+        df =super().select_sql("report_sql",{"jobmonth":Job_month})
         return df
     def return_job_run_date(self):
         df =super().select_sql("select_job_date")
@@ -16,10 +16,10 @@ class report_generation(SqliteDB_Connect):
 def report_generation_monthwise():
     print("Creating report ")
     report_class =report_generation()
-    df= report_class.report_generation_function()
     start_date =report_class.return_job_run_date()
     end_date = start_date + relativedelta(months=1)
     file_name =start_date.strftime("%Y%m")
+    df= report_class.report_generation_function(file_name)
     df.to_csv("..//report//monthly_report_"+file_name+".csv",index=False)
     print("Creating report Completed")
     end_date = str(end_date)[0:10]

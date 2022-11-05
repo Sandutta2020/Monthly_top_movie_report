@@ -23,9 +23,9 @@ class SqliteDB_Connect:
         self.insert_sql= self.data_config[insert_movie_raw]
         self.cur.execute(self.insert_sql)
         self.conn.commit()
-    def select_sql(self,Sql_input):        
+    def select_sql(self,Sql_input,paramss={}):        
         self.selectsql= self.data_config[Sql_input]
-        df = pd.read_sql_query(self.selectsql, self.conn, parse_dates=["Review_date","RUNDATE"])
+        df = pd.read_sql_query(self.selectsql, self.conn, parse_dates=["Review_date","RUNDATE"],params=paramss)
         return df
     def create_sql(self,Sql_input):
         self.insert_sql= self.data_config[Sql_input]
