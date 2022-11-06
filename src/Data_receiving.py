@@ -3,7 +3,7 @@ import os
 import fnmatch
 import shutil
 from db_connector import SqliteDB_Connect
-
+import collections
 
 class class_movie_review_raw(SqliteDB_Connect):
     def __init__(self):
@@ -25,12 +25,18 @@ def Data_receiving():
             if check_quality(df):
                 movie_db.insert_review_data(df)
                 shutil.move("..//DRA//" + file, "..//DRA//Archive//" + file)
+            else:
+                raise Exception("Please Check the imput columns")
     if not csv_file_flag:
         print("No CSV files Present")
         raise Exception("No CSV files Present in DRA folder")
 def check_quality(df):
     if len(df) ==0:
         print("The CSV is empty or Unreadable")
+        return False
+    input_column_list=list(df.columns)
+    if collections.Counter(input_column_list) != collections.Counter(['UserID', 'MovieID', 'Rating', 'Review_date']):
+        print("Please check the input CSV column names")
         return False
     return True
 if __name__ == "__main__":
