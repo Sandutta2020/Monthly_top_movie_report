@@ -4,6 +4,7 @@ from Data_receiving import Data_receiving
 from Data_Staging import  data_staging
 from Data_mart import  creating_data_mart
 from report_generation import report_generation_monthwise
+from first_time_load import first_time_script
 import os
 from datetime import datetime, timedelta
 """
@@ -26,6 +27,8 @@ with DAG(
     t1 >> t2>>t3>>t4
 """
 if __name__ == "__main__":
+    first_time_script()
+    print("First_time Data Complete----------")
     creating_monthly_feed()
     print("Monthly Feed Complete----------")
     Data_receiving()

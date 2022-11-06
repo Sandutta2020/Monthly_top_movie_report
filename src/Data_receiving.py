@@ -26,7 +26,7 @@ def Data_receiving():
                 movie_db.insert_review_data(df)
                 shutil.move("..//DRA//" + file, "..//DRA//Archive//" + file)
             else:
-                raise Exception("Please Check the imput columns")
+                raise Exception("Please Check the input columns")
     if not csv_file_flag:
         print("No CSV files Present")
         raise Exception("No CSV files Present in DRA folder")
