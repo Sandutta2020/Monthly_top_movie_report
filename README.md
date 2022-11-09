@@ -1,3 +1,8 @@
+This small demo of ETL is used to showcase the top 15 movies every months based on user ratings. based on review date or(Timestamp on original movielen<br>
+database). The reviews are divided into monthly feeds and processed into etl system. All the dimension datedim and moviedim are already preloaded <br>
+at the time initial loading.The sqlite3 database used in background. 
+
+
 ```
 python3 -m venv airflow_env
 source airflow_env/bin/activate
