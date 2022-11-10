@@ -26,11 +26,12 @@ class class_movie_review_staging(SqliteDB_Connect):
         df_pivot =pd.pivot_table(df_latest, index='MovieID',columns='Rating', aggfunc='count')
         df_pivot.fillna(0,inplace=True)
         df_pivot.columns =["Rating1","Rating2","Rating3","Rating4","Rating5"]
-        df_pivot['Total']=df_pivot["Rating1"]+df_pivot["Rating2"]+df_pivot["Rating3"]+df_pivot["Rating4"]+df_pivot["Rating5"]
+        df_pivot['Rating_count']=df_pivot["Rating1"]+df_pivot["Rating2"]+df_pivot["Rating3"]+df_pivot["Rating4"]+df_pivot["Rating5"]
         df_pivot['Review_month'] =JOB_DATE
         df_pivot['monthly_avg'] =df_pivot.apply(lambda row: self.weighted_avg_func(row), axis=1)
         df_pivot.reset_index(inplace=True)
-        print(df_pivot.head())
+        df_pivot.to_sql("Movie_ratings_monthly_temp", self.conn, if_exists="replace", index=False)
+        print(df_pivot.head(1),df_pivot.shape)
 def data_staging():
     cls1 = class_movie_review_staging()
     cls1.loading_dsa()

@@ -29,6 +29,21 @@ select_sql :
   \ ddim.Month=fct.Review_month\n                            and ddim.Month = :jobmonth\n\
   \                            order by  fct.Overall_rating_avg desc)  a where a.Overall_rating_cnt\
   \ > a.cntavg\n                            limit 15\n"
+  merge_sql: "insert into Movie_ratings_monthly_01(MovieID,Rating_1_count,Rating_2_count,Rating_3_count,Rating_4_count,\n\
+  Rating_5_count,Rating_monthly_count,Rating_monthly_avg,Review_month)\nselect t.MovieID,t.Rating1,t.Rating2,t.Rating3,t.Rating4,t.Rating5,t.Rating_count,t.monthly_avg,t.Review_month\n\
+  from Movie_ratings_monthly_temp t where t.MovieID not in (select distinct MovieID\
+  \ from Movie_ratings_monthly)\nUNION ALL\nselect t.MovieID,t.Rating1+ t1.Rating_1_count,t.Rating2\
+  \ + t1.Rating_2_count,t.Rating3 + t1.Rating_3_count,\nt.Rating4 +t1.Rating_4_count,t.Rating5\
+  \ + t1.Rating_5_count,t.Rating_count,t.monthly_avg,t.Review_month\nfrom Movie_ratings_monthly_temp\
+  \ t,(select * from Movie_ratings_monthly  \nwhere Review_month ==(select max(Review_month)\
+  \ from Movie_ratings_monthly)) t1\nwhere t.MovieID =t1.MovieID\nUNION ALL \nselect\
+  \ t.MovieID,t.Rating_1_count,t.Rating_2_count,t.Rating_3_count,t.Rating_4_count,\n\
+  t.Rating_5_count,0,0,t1.Review_month\nfrom Movie_ratings_monthly t ,(select max(Review_month)\
+  \ Review_month from  Movie_ratings_monthly_temp) t1\nwhere t.Review_month ==(select\
+  \ max(Review_month) from Movie_ratings_monthly)\nand  t.MovieID not in (select distinct\
+  \ MovieID from Movie_ratings_monthly_temp);\n"
+  monthly_rating_insert : insert into Movie_ratings_monthly select * from  Movie_ratings_monthly_01
+  delete_temp_monthly_insert : delete from Movie_ratings_monthly_01
   select_job_date : "select  RUNDATE from JOB_RUN_DATE" 
   create_run_date : "Create table if not exists JOB_RUN_DATE(RUNDATE  DATE)"
 numtopmovies : 10
