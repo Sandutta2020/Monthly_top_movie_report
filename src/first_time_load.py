@@ -57,7 +57,9 @@ class class_movie_facts_loading(SqliteDB_Connect):
                           Rating_5_count INTEGER, \n
                           Rating_monthly_count INTEGER, \n
                           Review_month Text ,\n
-                          Rating_monthly_avg INTEGER \n
+                          Rating_monthly_avg real, \n
+                          OverallCount INTEGER ,\n
+                          Overall_rating_avg real \n
                           )"""
         self.cur.execute(self.sql)
         self.sql = """Create table if not exists  \n
@@ -69,7 +71,9 @@ class class_movie_facts_loading(SqliteDB_Connect):
                           Rating_5_count INTEGER, \n
                           Rating_monthly_count INTEGER, \n
                           Review_month Text ,\n
-                          Rating_monthly_avg INTEGER \n
+                          Rating_monthly_avg real, \n
+                          OverallCount INTEGER ,\n
+                          Overall_rating_avg real \n
                           )"""
         self.cur.execute(self.sql)
         self.sql = """Create table if not exists  \n

@@ -46,4 +46,10 @@ select_sql :
   delete_temp_monthly_insert : delete from Movie_ratings_monthly_01
   select_job_date : "select  RUNDATE from JOB_RUN_DATE" 
   create_run_date : "Create table if not exists JOB_RUN_DATE(RUNDATE  DATE)"
+  update_sql: "  update Movie_ratings_monthly  \n  set OverallCount =Rating_1_count\
+  \ + Rating_2_count +Rating_3_count+Rating_4_count+Rating_5_count,\n      Overall_rating_avg\
+  \ =round((Rating_1_count*1 + Rating_2_count*2 +Rating_3_count*3+Rating_4_count*4+Rating_5_count*5)/\n\
+  \t cast (Rating_1_count + Rating_2_count +Rating_3_count+Rating_4_count+Rating_5_count\
+  \  as real),3)\n\t  where Review_month =(select max(cast(Review_month as integqer))\
+  \ from Movie_ratings_monthly_01)\n"
 numtopmovies : 10
