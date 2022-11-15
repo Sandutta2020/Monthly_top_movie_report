@@ -3,14 +3,11 @@ __pycache__/Getting_recommendation.cpython-37.pyc
 __pycache__/utilities.cpython-37.pyc
 Document/~$C_docs.doc
 Document/~WRL3000.tmp
-analysis/.ipynb_checkpoints/Report_Analysis-checkpoint.ipynb
-analysis/.ipynb_checkpoints/Exploratory_Analysis-checkpoint.ipynb
-analysis/.ipynb_checkpoints/Pandas_timestamp-checkpoint.ipynb
 DRA/*.csv
 analysis/.ipynb_checkpoints/Untitled-checkpoint.ipynb
 DRA/Archive/*.csv
 src/__pycache__/*.pyc
 sqlite_DB/Movie_report.db
 src/sql_file.py
-report/*.csv
-analysis/.ipynb_checkpoints/Movie_report-checkpoint.ipynb
+report/*.*
+analysis/.ipynb_checkpoints/*.ipynb

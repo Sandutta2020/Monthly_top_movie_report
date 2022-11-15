@@ -12,7 +12,7 @@ class class_movie_review_staging(SqliteDB_Connect):
         numerator = df['Rating1']*1 + df['Rating2']*2 + df['Rating3']*3 +  df['Rating4']*4 + df['Rating5']*5 
         denominator = df['Rating1'] + df['Rating2'] + df['Rating3'] +  df['Rating4'] + df['Rating5']
         weighted_avg =(numerator) / ( denominator)
-        return round(weighted_avg,2)
+        return round(weighted_avg,3)
     def loading_dsa(self):
         print("Loading fact details")
         df=super().select_sql('select_movie_review')
