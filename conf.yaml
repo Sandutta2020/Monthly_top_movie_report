@@ -52,4 +52,17 @@ select_sql :
   \t cast (Rating_1_count + Rating_2_count +Rating_3_count+Rating_4_count+Rating_5_count\
   \  as real),3)\n\t  where Review_month =(select max(cast(Review_month as integqer))\
   \ from Movie_ratings_monthly_01)\n"
+  report_sql_pdf: " with last_six_months as (\nselect Month from DateDim where Month <=:jobmonth\
+  \ order by Month desc limit 6),\nmax_review_count as (\nselect \nmax(a.Rating_monthly_count)/2\
+  \  max_count,\nReview_month from \n  Movie_ratings_monthly a,last_six_months b\n\
+  where a.Review_month =b.Month\ngroup by Review_month),\nmovie_six_months as\n(select\
+  \ a.MovieID,\na.Rating_monthly_count,\na.Review_month,\na.Rating_monthly_avg,\n\
+  a.OverallCount,\na.Overall_rating_avg,\nrow_number() over(PARTITION by a.Review_month\
+  \ order by Rating_monthly_avg desc) rnk\nfrom\nMovie_ratings_monthly a,max_review_count\
+  \ c\nwhere a.Review_month=c.Review_month\nand a.Rating_monthly_count >= c.max_count)\n\
+  select\na.MovieID, \na.rnk ,\nb.Title,\na.Rating_monthly_count,\na.Review_month,\n\
+  a.Rating_monthly_avg,\na.OverallCount,\na.Overall_rating_avg\n from movie_six_months\
+  \ a,MovieDIM b\n where a.MovieID =b.MovieID and \n  a.rnk <= 15\n  order by b.Title,a.Review_month\
+  \ desc\n\n"
+  last_6_months: "select Month from DateDim where Month < :jobmonth order by Month desc limit 6"
 numtopmovies : 10
