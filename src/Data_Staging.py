@@ -31,7 +31,6 @@ class class_movie_review_staging(SqliteDB_Connect):
         df_pivot['monthly_avg'] =df_pivot.apply(lambda row: self.weighted_avg_func(row), axis=1)
         df_pivot.reset_index(inplace=True)
         df_pivot.to_sql("Movie_ratings_monthly_temp", self.conn, if_exists="replace", index=False)
-        print(df_pivot.head(1),df_pivot.shape)
 def data_staging():
     cls1 = class_movie_review_staging()
     cls1.loading_dsa()

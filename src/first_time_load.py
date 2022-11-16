@@ -46,7 +46,8 @@ class class_movie_facts_loading(SqliteDB_Connect):
                           Movie_review_raw(User_ID  INTEGER, \n
                           MovieID INTEGER, \n
                           Rating INTEGER, \n
-                          Review_date Text)"""
+                          Review_date Text,
+                          Review_month Text)"""
         self.cur.execute(self.sql)
         self.sql = """Create table if not exists  \n
                           Movie_ratings_monthly(MovieID INTEGER, \n

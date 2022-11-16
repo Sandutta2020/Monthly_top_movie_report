@@ -1,5 +1,6 @@
 select_sql :
   select_movie_review : "select  * from Movie_review_raw"
+  delete_movie_raw : "delete from  Movie_review_raw where Review_month in(select distinct Review_month from Movie_review_raw_temp)"
   insert_movie_raw : "Insert into Movie_review_raw select * from Movie_review_raw_temp"
   insert_movie_details_fact : "Insert into Movie_review_Fact_details select * from Movie_review_Fact_details_temp"
   truncate_sql : "delete from Movie_review_fact"
@@ -43,6 +44,7 @@ select_sql :
   \ max(Review_month) from Movie_ratings_monthly)\nand  t.MovieID not in (select distinct\
   \ MovieID from Movie_ratings_monthly_temp);\n"
   monthly_rating_insert : insert into Movie_ratings_monthly select * from  Movie_ratings_monthly_01
+  delete_movie_rating_monthly : "delete from  Movie_ratings_monthly where Review_month in(select distinct Review_month from Movie_ratings_monthly_01)"
   delete_temp_monthly_insert : delete from Movie_ratings_monthly_01
   select_job_date : "select  RUNDATE from JOB_RUN_DATE" 
   create_run_date : "Create table if not exists JOB_RUN_DATE(RUNDATE  DATE)"

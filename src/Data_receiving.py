@@ -9,6 +9,8 @@ class class_movie_review_raw(SqliteDB_Connect):
     def __init__(self):
         super().__init__()
     def insert_review_data(self, df):
+        df['Review_month'] = self.file_name
+        super().delete_sql('delete_movie_raw')
         df.to_sql("Movie_review_raw_temp", self.conn, if_exists="replace", index=False)
         super().insert_sql('insert_movie_raw')
 
@@ -21,7 +23,7 @@ def Data_receiving():
             print(file)
             csv_file_flag = True
             df = pd.read_csv("..//DRA//" + file)
-            print(df.shape)
+            print(df.head(1))
             if check_quality(df):
                 movie_db.insert_review_data(df)
                 shutil.move("..//DRA//" + file, "..//DRA//Archive//" + file)

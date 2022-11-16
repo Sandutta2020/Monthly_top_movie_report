@@ -19,9 +19,20 @@ class SqliteDB_Connect:
         self.conn = sqlite3.connect(DB_PATH)
         self.cur =self.conn.cursor()
         self.data_config = read_yaml("..//Conf.yaml", 'select_sql')
+        df = pd.read_sql_query("SELECT name FROM  sqlite_master  WHERE  type ='table' and name ='JOB_RUN_DATE'", self.conn)
+        if len(df) > 0:
+            self.selectsql= self.data_config['select_job_date']
+            df = pd.read_sql_query(self.selectsql, self.conn,parse_dates=["RUNDATE"])
+            start_date =max(df["RUNDATE"])
+            self.file_name =   start_date.strftime("%Y%m")
+            self.report_name_title = start_date.strftime("%b-%y")
     def insert_sql(self,insert_movie_raw):
         self.insert_sql= self.data_config[insert_movie_raw]
         self.cur.execute(self.insert_sql)
+        self.conn.commit()
+    def delete_sql(self,insert_movie_raw):
+        self.delete_sql= self.data_config[insert_movie_raw]
+        self.cur.execute(self.delete_sql)
         self.conn.commit()
     def select_sql(self,Sql_input,paramss={}):        
         self.selectsql= self.data_config[Sql_input]
