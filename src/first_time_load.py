@@ -38,12 +38,14 @@ class class_movie_facts_loading(SqliteDB_Connect):
         super().__init__()
         print("Creating Connection with sqlite db")
         self.sql = """Create table if not exists  \n
-                          Movie_review_Fact_details(MovieID  INTEGER, \n
-                          Rating real, \n
-                          Review_month INTEGER)"""
+                          Movie_review_raw(User_ID  INTEGER, \n
+                          MovieID INTEGER, \n
+                          Rating INTEGER, \n
+                          Review_date Text,
+                          Review_month Text)"""
         self.cur.execute(self.sql)
         self.sql = """Create table if not exists  \n
-                          Movie_review_raw(User_ID  INTEGER, \n
+                          Movie_review_raw_temp(User_ID  INTEGER, \n
                           MovieID INTEGER, \n
                           Rating INTEGER, \n
                           Review_date Text,
@@ -76,14 +78,6 @@ class class_movie_facts_loading(SqliteDB_Connect):
                           OverallCount INTEGER ,\n
                           Overall_rating_avg real \n
                           )"""
-        self.cur.execute(self.sql)
-        self.sql = """Create table if not exists  \n
-                          Movie_review_fact(MovieID  INTEGER, \n
-                          Review_month INTEGER,\n
-                          Monthly_rating_avg REAL,\n
-                          Monthly_rating_cnt INTEGER,\n
-                          Overall_rating_avg REAL,\n
-                          Overall_rating_cnt INTEGER)"""
         self.cur.execute(self.sql)
 def first_time_script():    
     if os.path.exists(os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","sqlite_DB","Movie_report.db")):

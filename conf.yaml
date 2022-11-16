@@ -2,34 +2,6 @@ select_sql :
   select_movie_review : "select  * from Movie_review_raw"
   delete_movie_raw : "delete from  Movie_review_raw where Review_month in(select distinct Review_month from Movie_review_raw_temp)"
   insert_movie_raw : "Insert into Movie_review_raw select * from Movie_review_raw_temp"
-  insert_movie_details_fact : "Insert into Movie_review_Fact_details select * from Movie_review_Fact_details_temp"
-  truncate_sql : "delete from Movie_review_fact"
-  insert_mart_sql: "insert into Movie_review_fact(MovieID,\n                     Review_month,\n\
-  \                     Monthly_rating_avg,\n                     Monthly_rating_cnt,\n\
-  \                     Overall_rating_avg,\n                     Overall_rating_cnt\n\
-  \                       )\n                    select \n                    MovieID\
-  \ ,\n                    Review_month,\n                    avg(avg) over(partition\
-  \ by MovieID,Review_month) Monthly_rating_avg,\n                    sum(count) over(partition\
-  \ by MovieID,Review_month ) Monthly_rating_cnt,\n                    avg(avg) over(partition\
-  \ by MovieID order by Review_month ) Overall_rating_avg,\n                    sum(count)\
-  \ over(partition by MovieID order by Review_month) Overall_rating_cnt\n        \
-  \            from \n                    (select \n\t                count(*) count,\n\
-  \t                Avg(Rating) avg,\n\t                MovieID,\n\t             \
-  \   Review_month\tfrom \n\t                Movie_review_Fact_details\n\t       \
-  \         group by MovieID,Review_month)"
-  report_sql: "select Title as \"Movie Name\",\n                             upper(Review_mon)\
-  \ as \"Review Month\",\n                             Overall_rating_avg as \"Rating_Average\"\
-  ,\n                             Overall_rating_cnt as Overall_rating_cnt\n     \
-  \                        from\n                             (select mdim.Title,\n\
-  \                                ddim.Review_mon,fct.Overall_rating_avg,\n     \
-  \                           fct.Overall_rating_cnt ,\n                         \
-  \       max(fct.Overall_rating_cnt) over(partition by Review_month)/2 cntavg\n \
-  \                           from Movie_review_fact fct ,\n                     \
-  \       MovieDIM mdim ,\n                            DateDim ddim \n           \
-  \                 where  mdim.movieID=fct.MovieID\n                            and\
-  \ ddim.Month=fct.Review_month\n                            and ddim.Month = :jobmonth\n\
-  \                            order by  fct.Overall_rating_avg desc)  a where a.Overall_rating_cnt\
-  \ > a.cntavg\n                            limit 15\n"
   merge_sql: "insert into Movie_ratings_monthly_01(MovieID,Rating_1_count,Rating_2_count,Rating_3_count,Rating_4_count,\n\
   Rating_5_count,Rating_monthly_count,Rating_monthly_avg,Review_month)\nselect t.MovieID,t.Rating1,t.Rating2,t.Rating3,t.Rating4,t.Rating5,t.Rating_count,t.monthly_avg,t.Review_month\n\
   from Movie_ratings_monthly_temp t where t.MovieID not in (select distinct MovieID\

@@ -18,16 +18,12 @@ class class_movie_review_staging(SqliteDB_Connect):
         df=super().select_sql('select_movie_review')
         df['Review_month'] =df['Review_date'].apply(self.return_yyyymm_format)
         df =df[['MovieID','Rating','Review_month']].copy()
-        df.to_sql("Movie_review_Fact_details_temp", self.conn, if_exists="replace", index=False)
-        super().insert_sql('insert_movie_details_fact')
-        df_run_date =super().select_sql("select_job_date")
-        JOB_DATE = max(df_run_date["RUNDATE"]).strftime("%Y%m")
-        df_latest =df[df['Review_month'].astype(str)==JOB_DATE].copy()
+        df_latest =df[df['Review_month'].astype(str)==self.file_name].copy()
         df_pivot =pd.pivot_table(df_latest, index='MovieID',columns='Rating', aggfunc='count')
         df_pivot.fillna(0,inplace=True)
         df_pivot.columns =["Rating1","Rating2","Rating3","Rating4","Rating5"]
         df_pivot['Rating_count']=df_pivot["Rating1"]+df_pivot["Rating2"]+df_pivot["Rating3"]+df_pivot["Rating4"]+df_pivot["Rating5"]
-        df_pivot['Review_month'] =JOB_DATE
+        df_pivot['Review_month'] =self.file_name
         df_pivot['monthly_avg'] =df_pivot.apply(lambda row: self.weighted_avg_func(row), axis=1)
         df_pivot.reset_index(inplace=True)
         df_pivot.to_sql("Movie_ratings_monthly_temp", self.conn, if_exists="replace", index=False)

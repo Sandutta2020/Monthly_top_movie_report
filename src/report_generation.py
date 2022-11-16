@@ -26,11 +26,7 @@ def report_generation_monthwise():
     file_name = start_date.strftime("%Y%m")
     report_name_title = start_date.strftime("%b-%y")
     # ----Normal Report
-    df = report_class.report_generation_function(file_name, "report_sql")
-    df.to_csv("..//report//monthly_report_" + file_name + ".csv", index=False)
-    print("Creating report Completed")
-    # ----Normal Report
-    print("Creating HTML Completed")
+    print("Creating HTML Started")
     end_date = str(end_date)[0:10]
     df_details = report_class.report_generation_function(file_name, "report_sql_pdf")
     last_6_months_df = report_class.report_generation_function(
