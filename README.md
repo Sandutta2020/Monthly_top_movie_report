@@ -43,4 +43,4 @@ lsof -i tcp:8080
 Reference :https://betterdatascience.com/apache-airflow-install/
 
 The report will show like below :
-<div w3-include-html="https://github.com/Sandutta2020/airflow_report/blob/Master/Sample_report.html"></div>
+![ScreenShot](https://github.com/Sandutta2020/airflow_report/blob/master/static/Sample_report.JPG)

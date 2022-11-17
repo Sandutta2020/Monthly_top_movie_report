@@ -37,11 +37,12 @@ def report_generation_monthwise():
     df_details_latest.sort_values(by=["rnk"], inplace=True)
     HTML_STR = """<HTML><HEAD>
             <style>
-            th {background-color: powderblue;align :center}
-            td {text-align :center;font-size: 15px}
+            th {background-color: powderblue;}
             table {border:1px solid black}
             H1   {color: blue;}
-            p    {color: green;}
+            p    {color: green;font-weight: bold}
+            .MV_Title{text-align :left;font-size: 16px;font-weight: bold}
+            .MV_data{text-align :center;font-size: 15px}
             </style>
             </HEAD><BODY>
             <center><H1>  Top 10 Movies Monthly Report  </H1></center>"""
@@ -50,7 +51,7 @@ def report_generation_monthwise():
     )
     HTML_STR = (
         HTML_STR
-        + """<center><TABLE><TR><TH> Movie Name</TH>
+        + """<center><TABLE><TR><TH align ='left' > Movie Name</TH>
                             <TH colspan=3> RANK</TH>
                             <TH>Consequtive week</TH>
                             <TH colspan=3> Monthly Average</TH>
@@ -106,9 +107,9 @@ def report_generation_monthwise():
         table_data = '<TR>'
         for key,value in Movie_data.items():
             if key =='Movie_data':
-                table_data = table_data + "<td align ='left'>{}</td>".format(value)
+                table_data = table_data + "<td class='MV_Title'>{}</td>".format(value)
             else:
-                table_data = table_data + "<td>{}</td>".format(value)      
+                table_data = table_data + "<td class='MV_data'>{}</td>".format(value)      
 
         HTML_STR = HTML_STR + table_data + '</TR>'
     HTML_STR = HTML_STR + "</TABLE></center></BODY></HTML>"
