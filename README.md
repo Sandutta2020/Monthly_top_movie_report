@@ -40,7 +40,8 @@ List of process running at 8080
 ```
 lsof -i tcp:8080
 ```
-Reference :https://betterdatascience.com/apache-airflow-install/
-
 The report will show like below :
+
 ![ScreenShot](https://github.com/Sandutta2020/airflow_report/blob/master/static/Sample_report.JPG)
+
+Reference :https://betterdatascience.com/apache-airflow-install/
