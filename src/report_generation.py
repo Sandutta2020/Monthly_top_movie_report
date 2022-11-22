@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from db_connector import SqliteDB_Connect
 from dateutil.relativedelta import relativedelta
 import pandas as pd
+import os
 
 
 class report_generation(SqliteDB_Connect):
@@ -114,23 +115,24 @@ def report_generation_monthwise():
         HTML_STR = HTML_STR + table_data + '</TR>'
     HTML_STR = HTML_STR + "</TABLE></center></BODY></HTML>"
     # print(HTML_STR)
-    with open("..//report//monthly_html_report_" + file_name + ".html", "w") as f:
+    report_file_location =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","report","monthly_html_report_" + file_name + ".html")
+    with open(report_file_location, "w") as f:
         f.write(HTML_STR)
     report_class.set_rundate(end_date)
 
 
 def getting_image(val):
     if val ==None :
-        return "<img src='..//static//new.png'/>"
-    if val == 0:
-        return "<img src='..//static//icons8-equals-24.png'/>"
+        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","new.png")        
+    elif val == 0:
+        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","icons8-equals-24.png")
     elif val > 0:
-        return "<img src='..//static//thick-arrow-pointing-up.png'/>"
+        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","thick-arrow-pointing-up.png")
     elif val <0:
-        return "<img src='..//static//thick-arrow-pointing-down.png'/>"
+        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","thick-arrow-pointing-down.png")
     else :
-        return "<img src='..//static//new.png'/>"
-
+        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","new.png")
+    return '<img src="'+path+'"/>'
 
 if __name__ == "__main__":
     print("Creating report ")

@@ -18,15 +18,15 @@ pattern = "User_review*.csv"
 def Data_receiving():
     movie_db = class_movie_review_raw()
     csv_file_flag = False
-    for file in os.listdir("..//DRA//"):
+    for file in os.listdir(os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","DRA")):
         if fnmatch.fnmatch(file, pattern):
             print(file)
             csv_file_flag = True
-            df = pd.read_csv("..//DRA//" + file)
+            df = pd.read_csv(os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","DRA",file))
             print(df.head(1))
             if check_quality(df):
                 movie_db.insert_review_data(df)
-                shutil.move("..//DRA//" + file, "..//DRA//Archive//" + file)
+                shutil.move(os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","DRA",file), os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","DRA","Archive",file))
             else:
                 raise Exception("Please Check the input columns")
     if not csv_file_flag:

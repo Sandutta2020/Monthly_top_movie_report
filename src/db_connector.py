@@ -18,7 +18,7 @@ class SqliteDB_Connect:
         DB_PATH =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","sqlite_DB","Movie_report.db")
         self.conn = sqlite3.connect(DB_PATH)
         self.cur =self.conn.cursor()
-        self.data_config = read_yaml("..//Conf.yaml", 'select_sql')
+        self.data_config = read_yaml(os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","Conf.yaml"), 'select_sql')
         df = pd.read_sql_query("SELECT name FROM  sqlite_master  WHERE  type ='table' and name ='JOB_RUN_DATE'", self.conn)
         if len(df) > 0:
             self.selectsql= self.data_config['select_job_date']
