@@ -1,0 +1,37 @@
+pipeline {
+    agent any
+     stages {
+        stage('Build') {
+            steps {
+			withPythonEnv('python') {
+                echo 'We are cloning the repository'
+                bat "echo %WORKSPACE%"
+                bat 'git clone "https://github.com/Sandutta2020/airflow_report.git"'
+                 dir('airflow_report') {
+                    bat 'git checkout dev'
+                    bat 'pip install -r requirements.txt'
+                         }
+                
+                } 
+            }
+        }
+		stage('Test') {
+            steps {
+			withPythonEnv('python') {
+                bat "python %WORKSPACE%\\basic_cicd.py"
+             }
+		    }
+        }
+		stage('Teardown') {
+		 input {
+                message "Shall we delete to production?"
+                ok "Yes please!"
+            }
+
+            steps {
+                bat "rd /s /q %WORKSPACE%\\airflow_report"
+                echo  "Deleteing a folder"
+            }
+        }
+    }
+}
