@@ -19,7 +19,7 @@ pipeline {
             steps {
 			withPythonEnv('python') {
 			dir('airflow_report') {
-                bat "python basic_cicd.py"
+                bat "pytest  basic_cicd.py"
 		}
              }
 		    }
