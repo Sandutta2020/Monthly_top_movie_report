@@ -19,7 +19,7 @@ pipeline {
             steps {
 			withPythonEnv('python') {
 			dir('airflow_report') {
-                bat "flake8 src/*.py"
+                bat "flake8 src"
 		}
              }
 		    }

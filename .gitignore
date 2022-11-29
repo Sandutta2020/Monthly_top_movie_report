@@ -11,3 +11,4 @@ sqlite_DB/Movie_report.db
 src/sql_file.py
 report/*.*
 analysis/.ipynb_checkpoints/*.ipynb
+__pycache__/basic_cicd.cpython-37-pytest-5.3.5.pyc
