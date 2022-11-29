@@ -1,7 +1,5 @@
-import matplotlib.pyplot as plt
 from db_connector import SqliteDB_Connect
 from dateutil.relativedelta import relativedelta
-import pandas as pd
 import os
 
 
@@ -29,12 +27,15 @@ def report_generation_monthwise():
     # ----Normal Report
     print("Creating HTML Started")
     end_date = str(end_date)[0:10]
-    df_details = report_class.report_generation_function(file_name, "report_sql_pdf")
+    df_details = report_class.report_generation_function(
+        file_name,
+        "report_sql_pdf")
     last_6_months_df = report_class.report_generation_function(
         file_name, "last_6_months"
     )
     # print(last_6_months_df.head())
-    df_details_latest = df_details[df_details["Review_month"] == file_name].copy()
+    df_details_latest = df_details[
+        df_details["Review_month"] == file_name].copy()
     df_details_latest.sort_values(by=["rnk"], inplace=True)
     HTML_STR = """<HTML><HEAD>
             <style>
@@ -75,60 +76,60 @@ def report_generation_monthwise():
         rank_diff = None
         cnt = 0
         for index_m, row_m in last_6_months_df.iterrows():
-            df_details_temp = df_details[
+            d_tmp = df_details[
                 (df_details["Review_month"] == str(row_m["Month"]))
                 & (df_details["MovieID"] == Movieid)
             ].copy()
-            if len(df_details_temp) > 0:
+            if len(d_tmp) > 0:
                 cnt = cnt + 1
                 if index_m == 0:
-                    rank_diff = int(row["rnk"]) - int(df_details_temp["rnk"])
-                    Monthly_count_diff = int(row["Rating_monthly_count"]) - int(
-                        df_details_temp["Rating_monthly_count"]
+                    rank_diff = int(row["rnk"]) - int(d_tmp["rnk"])
+                    Monthly_count_diff = int(row["Rating_monthly_count"]) - int(  # noqa: E501
+                        d_tmp["Rating_monthly_count"]
                     )
-                    Monthly_avg_diff = float(row["Rating_monthly_avg"]) - float(
-                        df_details_temp["Rating_monthly_avg"]
+                    Monthly_avg_diff = float(row["Rating_monthly_avg"]) - float(  # noqa: E501
+                        d_tmp["Rating_monthly_avg"]
                     )
-                    overall_avg_diff = float(row["Overall_rating_avg"]) - float(
-                        df_details_temp["Overall_rating_avg"]
+                    overall_avg_diff = float(row["Overall_rating_avg"]) - float(  # noqa: E501
+                        d_tmp["Overall_rating_avg"]
                     )
             else:
                 break
         Movie_data["rnk"] = row["rnk"]
         Movie_data["rank_icon"] = getting_image(rank_diff)
-        Movie_data["rank_diff"] = "" if rank_diff == None else rank_diff
+        Movie_data["rank_diff"] = "" if rank_diff is None else rank_diff
         Movie_data["Consequitive_week"] = cnt
         Movie_data["Rating_monthly_avg"] = row["Rating_monthly_avg"]
         Movie_data["Monthly_avg_diff_icon"] = getting_image(Monthly_avg_diff)
         Movie_data["Monthly_avg_diff"] = (
-            "" if overall_avg_diff == None else round(Monthly_avg_diff, 3)
+            "" if overall_avg_diff is None else round(Monthly_avg_diff, 3)
         )
         Movie_data["Overall_rating_avg"] = row["Overall_rating_avg"]
         Movie_data["overall_avg_diff_icon"] = getting_image(overall_avg_diff)
         Movie_data["overall_avg_diff"] = (
-            "" if overall_avg_diff == None else round(overall_avg_diff, 3)
+            "" if overall_avg_diff is None else round(overall_avg_diff, 3)
         )
         Movie_data["Rating_monthly_count"] = row["Rating_monthly_count"]
-        Movie_data["Monthly_count_diff_icon"] = getting_image(Monthly_count_diff)
+        Movie_data["Monthly_count_diff_icon"] = getting_image(Monthly_count_diff)  # noqa: E501
         Movie_data["Monthly_count_diff"] = (
-            "" if Monthly_count_diff == None else Monthly_count_diff
+            "" if Monthly_count_diff is None else Monthly_count_diff
         )
         Movie_data["OverallCount"] = row["OverallCount"]
-        table_data = "<TR>"
+        t_d = "<TR>"
         for key, value in Movie_data.items():
             if key == "Movie_data":
-                table_data = table_data + "<td class='MV_Title'>{}</td>".format(value)
+                t_d = t_d + "<td class='MV_Title'>{}</td>".format(value)
             else:
-                table_data = table_data + "<td class='MV_data'>{}</td>".format(value)
+                t_d = t_d + "<td class='MV_data'>{}</td>".format(value)
 
-        HTML_STR = HTML_STR + table_data + "</TR>"
+        HTML_STR = HTML_STR + t_d + "</TR>"
     HTML_STR = HTML_STR + "</TABLE></center></BODY></HTML>"
     # print(HTML_STR)
     report_file_location = os.path.join(
         os.path.split(os.path.abspath(__file__))[0],
         "..",
         "report",
-        "monthly_html_report_" + file_name + ".html",
+        "monthly_html_report_" + file_name + ".html"
     )
     with open(report_file_location, "w") as f:
         f.write(HTML_STR)
@@ -136,9 +137,12 @@ def report_generation_monthwise():
 
 
 def getting_image(val):
-    if val == None:
+    if val is None:
         path = os.path.join(
-            os.path.split(os.path.abspath(__file__))[0], "..", "static", "new.png"
+            os.path.split(os.path.abspath(__file__))[0],
+            "..",
+            "static",
+            "new.png"
         )
     elif val == 0:
         path = os.path.join(
@@ -163,7 +167,10 @@ def getting_image(val):
         )
     else:
         path = os.path.join(
-            os.path.split(os.path.abspath(__file__))[0], "..", "static", "new.png"
+            os.path.split(os.path.abspath(__file__))[0],
+            "..",
+            "static",
+            "new.png"
         )
     return '<img src="' + path + '"/>'
 

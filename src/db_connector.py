@@ -31,12 +31,15 @@ class SqliteDB_Connect:
             "select_sql",
         )
         df = pd.read_sql_query(
-            "SELECT name FROM  sqlite_master  WHERE  type ='table' and name ='JOB_RUN_DATE'",
+            "SELECT name FROM  sqlite_master  WHERE  type ='table' and name ='JOB_RUN_DATE'",  # noqa: E501
             self.conn,
         )
         if len(df) > 0:
             self.selectsql = self.data_config["select_job_date"]
-            df = pd.read_sql_query(self.selectsql, self.conn, parse_dates=["RUNDATE"])
+            df = pd.read_sql_query(
+                self.selectsql,
+                self.conn,
+                parse_dates=["RUNDATE"])
             start_date = max(df["RUNDATE"])
             self.file_name = start_date.strftime("%Y%m")
             self.report_name_title = start_date.strftime("%b-%y")
@@ -68,7 +71,7 @@ class SqliteDB_Connect:
     def set_rundate(self, updated_run_date):
         print("setting updated rundate with :", updated_run_date)
         self.updatesql = (
-            """update JOB_RUN_DATE set RUNDATE =""" + "'" + updated_run_date + "'"
+            """update JOB_RUN_DATE set RUNDATE =""" + "'" + updated_run_date + "'"  # noqa: E501
         )
         self.cur.execute(self.updatesql)
         self.conn.commit()

@@ -1,4 +1,3 @@
-import sqlite3
 import pandas as pd
 from dateutil.relativedelta import relativedelta
 from db_connector import SqliteDB_Connect
@@ -21,7 +20,11 @@ class class_Job_loading(SqliteDB_Connect):
     def get_rundate(self):
         print("Get the last rundate")
         self.selectsql = "select  RUNDATE from JOB_RUN_DATE"
-        df = pd.read_sql_query(self.selectsql, self.conn, parse_dates=["RUNDATE"])
+        df = pd.read_sql_query(
+            self.selectsql,
+            self.conn,
+            parse_dates=["RUNDATE"]
+            )
         # print(df)
         return df
 
@@ -29,7 +32,7 @@ class class_Job_loading(SqliteDB_Connect):
         print("setting updated rundate with :", updated_run_date)
         print(type(updated_run_date))
         self.updatesql = (
-            """update JOB_RUN_DATE set RUNDATE =""" + "'" + updated_run_date + "'"
+            """update JOB_RUN_DATE set RUNDATE =""" + "'" + updated_run_date + "'"  # noqa: E501
         )
         self.cur.execute(self.updatesql)
         self.conn.commit()
@@ -42,14 +45,18 @@ def creating_monthly_feed():
     start_date = max(df["RUNDATE"])
     end_date = start_date + relativedelta(months=1)
     df_user_reviews = pd.read_csv(
-        "..//data//User_ratings.gzip", compression="gzip", parse_dates=["Review_date"]
+        "..//data//User_ratings.gzip",
+        compression="gzip",
+        parse_dates=["Review_date"]
     )
     delta_records = df_user_reviews.loc[
         (df_user_reviews["Review_date"] > start_date)
         & (df_user_reviews["Review_date"] < end_date)
     ]
     file_name = start_date.strftime("%Y%m")
-    delta_records.to_csv("..//DRA//User_review" + file_name + ".csv", index=False)
+    delta_records.to_csv(
+        "..//DRA//User_review" + file_name + ".csv",
+        index=False)
     end_date = str(end_date)[0:10]
     # job_class.set_rundate(end_date)
 

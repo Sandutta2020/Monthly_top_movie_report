@@ -8,11 +8,11 @@ class class_Dimention_loading(SqliteDB_Connect):
     def __init__(self):
         super().__init__()
         print("Creating Connection with sqlite db")
-        self.sql = """Create table if not exists  \n
-                          DateDim(Date  INTEGER, \n
-                          Month INTEGER, \n
-                          Quarter INTEGER, \n                          
-                          Year INTEGER, \n
+        self.sql = """Create table if not exists\n
+                          DateDim(Date  INTEGER,\n
+                          Month INTEGER,\n
+                          Quarter INTEGER,\n
+                          Year INTEGER,\n
                           Mon INTEGER)"""
         self.cur.execute(self.sql)
         self.sql = """Create table if not exists  \n
@@ -27,7 +27,15 @@ class class_Dimention_loading(SqliteDB_Connect):
         return int(year + mon.rjust(2, "0"))
 
     def Load_date_dimension(self, start_date, end_date):
-        df = pd.DataFrame({"Date": pd.date_range(start_date, end_date, freq="M")})
+        df = pd.DataFrame(
+            {
+                "Date": pd.date_range(
+                    start_date,
+                    end_date,
+                    freq="M"
+                    )
+                }
+            )
         df["Month"] = df["Date"].apply(self.return_yyyymm_format)
         df["Quarter"] = df.Date.dt.quarter
         df["Year"] = df.Date.dt.year
@@ -88,6 +96,9 @@ class class_movie_facts_loading(SqliteDB_Connect):
                           )"""
         self.cur.execute(self.sql)
 
+        def __repr__(self):
+            return "class load is Complete"
+
 
 def first_time_script():
     if os.path.exists(
@@ -103,9 +114,13 @@ def first_time_script():
         print("Loading Dimension as There is not db found")
         class_loading = class_Dimention_loading()
         class_loading.Load_date_dimension("4/1/2000", "3/1/2003")
-        df_mov = pd.read_csv("..//data//Movie_details.gzip", compression="gzip")
+        df_mov = pd.read_csv(
+            "..//data//Movie_details.gzip",
+            compression="gzip"
+            )
         class_loading.Load_movie_dimension_from_dataframe(df_mov, "MovieDIM")
         fact_loading = class_movie_facts_loading()
+        print(fact_loading)
 
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-import sqlite3
 import pandas as pd
 from db_connector import SqliteDB_Connect
 
@@ -40,7 +39,7 @@ class class_movie_review_staging(SqliteDB_Connect):
             df_latest, index="MovieID", columns="Rating", aggfunc="count"
         )
         df_pivot.fillna(0, inplace=True)
-        df_pivot.columns = ["Rating1", "Rating2", "Rating3", "Rating4", "Rating5"]
+        df_pivot.columns = ["Rating1", "Rating2", "Rating3", "Rating4", "Rating5"]  # noqa: E501
         df_pivot["Rating_count"] = (
             df_pivot["Rating1"]
             + df_pivot["Rating2"]
@@ -54,7 +53,10 @@ class class_movie_review_staging(SqliteDB_Connect):
         )
         df_pivot.reset_index(inplace=True)
         df_pivot.to_sql(
-            "Movie_ratings_monthly_temp", self.conn, if_exists="replace", index=False
+            "Movie_ratings_monthly_temp",
+            self.conn,
+            if_exists="replace",
+            index=False
         )
 
 

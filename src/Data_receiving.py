@@ -13,7 +13,11 @@ class class_movie_review_raw(SqliteDB_Connect):
     def insert_review_data(self, df):
         df["Review_month"] = self.file_name
         super().delete_sql("delete_movie_raw")
-        df.to_sql("Movie_review_raw_temp", self.conn, if_exists="replace", index=False)
+        df.to_sql(
+            "Movie_review_raw_temp",
+            self.conn,
+            if_exists="replace",
+            index=False)
         super().insert_sql("insert_movie_raw")
 
 
@@ -24,14 +28,16 @@ def Data_receiving():
     movie_db = class_movie_review_raw()
     csv_file_flag = False
     for file in os.listdir(
-        os.path.join(os.path.split(os.path.abspath(__file__))[0], "..", "DRA")
+        os.path.join(
+            os.path.split(os.path.abspath(__file__))[0], "..", "DRA")
     ):
         if fnmatch.fnmatch(file, pattern):
             print(file)
             csv_file_flag = True
             df = pd.read_csv(
                 os.path.join(
-                    os.path.split(os.path.abspath(__file__))[0], "..", "DRA", file
+                    os.path.split(
+                        os.path.abspath(__file__))[0], "..", "DRA", file
                 )
             )
             print(df.head(1))
@@ -39,7 +45,8 @@ def Data_receiving():
                 movie_db.insert_review_data(df)
                 shutil.move(
                     os.path.join(
-                        os.path.split(os.path.abspath(__file__))[0], "..", "DRA", file
+                        os.path.split(
+                            os.path.abspath(__file__))[0], "..", "DRA", file
                     ),
                     os.path.join(
                         os.path.split(os.path.abspath(__file__))[0],
