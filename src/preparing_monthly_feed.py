@@ -3,6 +3,7 @@ import pandas as pd
 from dateutil.relativedelta import relativedelta
 from db_connector import SqliteDB_Connect
 
+
 class class_Job_loading(SqliteDB_Connect):
     def __init__(self):
         super().__init__()
@@ -34,6 +35,7 @@ class class_Job_loading(SqliteDB_Connect):
         self.conn.commit()
         # print(df)
 
+
 def creating_monthly_feed():
     job_class = class_Job_loading()
     df = job_class.get_rundate()
@@ -49,7 +51,7 @@ def creating_monthly_feed():
     file_name = start_date.strftime("%Y%m")
     delta_records.to_csv("..//DRA//User_review" + file_name + ".csv", index=False)
     end_date = str(end_date)[0:10]
-    #job_class.set_rundate(end_date)
+    # job_class.set_rundate(end_date)
 
 
 if __name__ == "__main__":

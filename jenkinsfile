@@ -15,11 +15,20 @@ pipeline {
                 } 
             }
         }
-		stage('Test') {
+		stage('Static code Test') {
             steps {
 			withPythonEnv('python') {
 			dir('airflow_report') {
-                bat "pytest  basic_cicd.py"
+                bat "flake8 src/*.py"
+		}
+             }
+		    }
+        }
+        stage('Automated Test') {
+            steps {
+			withPythonEnv('python') {
+			dir('airflow_report') {
+                bat "pytest basic_cicd.py"
 		}
              }
 		    }

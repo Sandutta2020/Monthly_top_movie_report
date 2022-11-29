@@ -1,12 +1,13 @@
 import pandas as pd
 from preparing_monthly_feed import creating_monthly_feed
 from Data_receiving import Data_receiving
-from Data_Staging import  data_staging
-from Data_mart import  creating_data_mart
+from Data_Staging import data_staging
+from Data_mart import creating_data_mart
 from report_generation import report_generation_monthwise
 from first_time_load import first_time_script
 import os
 from datetime import datetime, timedelta
+
 """
 from airflow.models import DAG
 from airflow.operators.bash import BashOperator

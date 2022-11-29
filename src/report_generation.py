@@ -47,8 +47,11 @@ def report_generation_monthwise():
             </style>
             </HEAD><BODY>
             <center><H1>  Top 10 Movies Monthly Report  </H1></center>"""
-    HTML_STR = HTML_STR + "<center><p>The Movie Review is showing for {}</p></center>".format(
-        report_name_title
+    HTML_STR = (
+        HTML_STR
+        + "<center><p>The Movie Review is showing for {}</p></center>".format(
+            report_name_title
+        )
     )
     HTML_STR = (
         HTML_STR
@@ -60,12 +63,12 @@ def report_generation_monthwise():
                             <TH colspan=3> Monthly Viewers</TH>
                             <TH> Overall Viewers</TH></TR>"""
     )
-    #print(df_details.head())
+    # print(df_details.head())
     for index, row in df_details_latest.iterrows():
         # print(row['Title'])
-        Movie_data ={}
+        Movie_data = {}
         Movieid = row["MovieID"]
-        Movie_data['Movie_data'] =row["Title"]
+        Movie_data["Movie_data"] = row["Title"]
         Monthly_count_diff = None
         Monthly_avg_diff = None
         overall_avg_diff = None
@@ -79,7 +82,7 @@ def report_generation_monthwise():
             if len(df_details_temp) > 0:
                 cnt = cnt + 1
                 if index_m == 0:
-                    rank_diff = int(row["rnk"]) -int(df_details_temp["rnk"]) 
+                    rank_diff = int(row["rnk"]) - int(df_details_temp["rnk"])
                     Monthly_count_diff = int(row["Rating_monthly_count"]) - int(
                         df_details_temp["Rating_monthly_count"]
                     )
@@ -91,48 +94,79 @@ def report_generation_monthwise():
                     )
             else:
                 break
-        Movie_data['rnk'] =row["rnk"]
-        Movie_data['rank_icon'] =getting_image(rank_diff)
-        Movie_data['rank_diff'] ='' if rank_diff ==None else rank_diff
-        Movie_data['Consequitive_week'] =cnt
-        Movie_data['Rating_monthly_avg']=row["Rating_monthly_avg"]
-        Movie_data['Monthly_avg_diff_icon']=getting_image(Monthly_avg_diff)
-        Movie_data['Monthly_avg_diff']='' if overall_avg_diff==None else round(Monthly_avg_diff,3)
-        Movie_data['Overall_rating_avg']=row["Overall_rating_avg"]
-        Movie_data['overall_avg_diff_icon']=getting_image(overall_avg_diff)
-        Movie_data['overall_avg_diff']='' if overall_avg_diff==None else round(overall_avg_diff,3)
-        Movie_data['Rating_monthly_count']=row["Rating_monthly_count"]
-        Movie_data['Monthly_count_diff_icon']=getting_image(Monthly_count_diff)
-        Movie_data['Monthly_count_diff']='' if Monthly_count_diff ==None else Monthly_count_diff
-        Movie_data['OverallCount']=row['OverallCount']
-        table_data = '<TR>'
-        for key,value in Movie_data.items():
-            if key =='Movie_data':
+        Movie_data["rnk"] = row["rnk"]
+        Movie_data["rank_icon"] = getting_image(rank_diff)
+        Movie_data["rank_diff"] = "" if rank_diff == None else rank_diff
+        Movie_data["Consequitive_week"] = cnt
+        Movie_data["Rating_monthly_avg"] = row["Rating_monthly_avg"]
+        Movie_data["Monthly_avg_diff_icon"] = getting_image(Monthly_avg_diff)
+        Movie_data["Monthly_avg_diff"] = (
+            "" if overall_avg_diff == None else round(Monthly_avg_diff, 3)
+        )
+        Movie_data["Overall_rating_avg"] = row["Overall_rating_avg"]
+        Movie_data["overall_avg_diff_icon"] = getting_image(overall_avg_diff)
+        Movie_data["overall_avg_diff"] = (
+            "" if overall_avg_diff == None else round(overall_avg_diff, 3)
+        )
+        Movie_data["Rating_monthly_count"] = row["Rating_monthly_count"]
+        Movie_data["Monthly_count_diff_icon"] = getting_image(Monthly_count_diff)
+        Movie_data["Monthly_count_diff"] = (
+            "" if Monthly_count_diff == None else Monthly_count_diff
+        )
+        Movie_data["OverallCount"] = row["OverallCount"]
+        table_data = "<TR>"
+        for key, value in Movie_data.items():
+            if key == "Movie_data":
                 table_data = table_data + "<td class='MV_Title'>{}</td>".format(value)
             else:
-                table_data = table_data + "<td class='MV_data'>{}</td>".format(value)      
+                table_data = table_data + "<td class='MV_data'>{}</td>".format(value)
 
-        HTML_STR = HTML_STR + table_data + '</TR>'
+        HTML_STR = HTML_STR + table_data + "</TR>"
     HTML_STR = HTML_STR + "</TABLE></center></BODY></HTML>"
     # print(HTML_STR)
-    report_file_location =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","report","monthly_html_report_" + file_name + ".html")
+    report_file_location = os.path.join(
+        os.path.split(os.path.abspath(__file__))[0],
+        "..",
+        "report",
+        "monthly_html_report_" + file_name + ".html",
+    )
     with open(report_file_location, "w") as f:
         f.write(HTML_STR)
     report_class.set_rundate(end_date)
 
 
 def getting_image(val):
-    if val ==None :
-        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","new.png")        
+    if val == None:
+        path = os.path.join(
+            os.path.split(os.path.abspath(__file__))[0], "..", "static", "new.png"
+        )
     elif val == 0:
-        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","icons8-equals-24.png")
+        path = os.path.join(
+            os.path.split(os.path.abspath(__file__))[0],
+            "..",
+            "static",
+            "icons8-equals-24.png",
+        )
     elif val > 0:
-        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","thick-arrow-pointing-up.png")
-    elif val <0:
-        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","thick-arrow-pointing-down.png")
-    else :
-        path =os.path.join(os.path.split(os.path.abspath(__file__))[0],"..","static","new.png")
-    return '<img src="'+path+'"/>'
+        path = os.path.join(
+            os.path.split(os.path.abspath(__file__))[0],
+            "..",
+            "static",
+            "thick-arrow-pointing-up.png",
+        )
+    elif val < 0:
+        path = os.path.join(
+            os.path.split(os.path.abspath(__file__))[0],
+            "..",
+            "static",
+            "thick-arrow-pointing-down.png",
+        )
+    else:
+        path = os.path.join(
+            os.path.split(os.path.abspath(__file__))[0], "..", "static", "new.png"
+        )
+    return '<img src="' + path + '"/>'
+
 
 if __name__ == "__main__":
     print("Creating report ")
