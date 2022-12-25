@@ -37,6 +37,7 @@ pipeline {
 		 input {
                 message "Shall we delete to production?"
                 ok "Yes please!"
+                bat 'cd'
             }
 
             steps {
