@@ -6,7 +6,7 @@ pipeline {
 			withPythonEnv('python') {
                 echo 'We are cloning the repository'
                 bat "echo %WORKSPACE%"
-                bat 'git clone "https://github.com/Sandutta2020/airflow_report.git"'
+                bat 'git clone "https://github.com/Sandutta2020/Monthly_top_movie_report.git"'
                  dir('airflow_report') {
                     bat 'git checkout dev'
                     bat 'pip install -r requirements.txt'
